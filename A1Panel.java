@@ -1,127 +1,107 @@
-package a4posted;
+//package a4posted;
 
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+/* Headers */
+import java.awt.event.*;
 import java.awt.*;
 import java.math.BigInteger;
+import javax.swing.*;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JTextArea;
-import javax.swing.JRadioButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+/* Classes */
+public class A1Panel extends JPanel implements ActionListener {
 
-import javax.swing.JPanel;
+    /* Declare global variables */
+	JTextField firstArg, secondArg; // text field for input integers
+	BigInteger arg1Int, arg2Int, resultInt; // integers operate on
+	JRadioButton Add, Subtract, Multiply, Divide; // radio buttons
+	JButton computeButton; // compute button
+	JLabel result, label1, label2; // display labels
+	
+	// Start all booleans as false.
+	Boolean addBoolean = false;
+	Boolean subtractBoolean = false;
+	Boolean multiplyBoolean = false; 
+	Boolean divideBoolean = false;
 
-
-
-public class A1Panel extends JPanel implements ActionListener
-{
-
-
-	JTextField firstArg, secondArg;
-	BigInteger arg1Int, arg2Int, resultInt;
-	JRadioButton Add, Subtract, Multiply, Divide;
-	JButton computeResult;
-	JLabel result, label1, label2;
-	Boolean AddBoolean = false;
-	Boolean SubtractBoolean = false;
-	Boolean MultiplyBoolean = false; 
-	Boolean DivideBoolean = false;
-
-	//constructor
-	public A1Panel()
-	{
-		//layout initialization
+	/* Constructor */
+	// Builds panel with components.
+	public A1Panel() {
+	
+		// Initialize grid layout.
 		GridBagLayout gridbag = new GridBagLayout();
-		GridBagConstraints c = new GridBagConstraints();
+		GridBagConstraints layout = new GridBagConstraints();
 		this.setLayout(gridbag);
 		
-		//first label
+		// Set first label.
 		JLabel label1 = new JLabel("First Argument");
 		label1.setFont(new Font("Times", Font.BOLD, 16));
 		label1.setBackground(Color.lightGray);
 		label1.setOpaque(true);
-		label1.setHorizontalAlignment( SwingConstants.CENTER );
-		c.gridx = 0;
-		c.gridy = 0;
-		add(label1, c);
+		label1.setHorizontalAlignment(SwingConstants.CENTER);
+		layout.gridx = 0;
+		layout.gridy = 0;
+		add(label1, layout);
 
 		
-		//First Arg textfield
+		// Spawn first integer's 'textField.
 		firstArg = new JTextField(25);
 		firstArg.addActionListener(this);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 0;
-		c.gridy = 1;
-		add(firstArg, c);
+		layout.fill = GridBagConstraints.HORIZONTAL;
+		layout.gridx = 0;
+		layout.gridy = 1;
+		add(firstArg, layout);
 
 		
-		//second label
+		// Set first label.
 		JLabel label2 = new JLabel("Second Argument");
 		label2.setFont(new Font("Times", Font.BOLD, 16));
 		label2.setBackground(new Color(160, 160, 160));
 		label2.setOpaque(true);
-		label2.setHorizontalAlignment( SwingConstants.CENTER );
-		c.gridx = 0;
-		c.gridy = 2;
-		add(label2, c);
+		label2.setHorizontalAlignment(SwingConstants.CENTER);
+		layout.gridx = 0;
+		layout.gridy = 2;
+		add(label2, layout);
 		
 		
-		//Second Arg textfield
+		// Spawn first integer's 'textField.
 		secondArg = new JTextField(25);
 		secondArg.addActionListener(this);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 0;
-		c.gridy = 3;
-		add(secondArg, c);
+		layout.fill = GridBagConstraints.HORIZONTAL;
+		layout.gridx = 0;
+		layout.gridy = 3;
+		add(secondArg, layout);
 		
 		
 		
-		//***Radio Buttons***//
-		
-		//ADD radio button
+		/* Radio Buttons */
+		// Spawn Add radio button.
 		Add = new JRadioButton("Add");
 		Add.addActionListener(this);
-		c.gridx = 0;
-		c.gridy = 4;
-		add(Add, c);
+		layout.gridx = 0;
+		layout.gridy = 4;
+		add(Add, layout);
 		
-		//SUBTRACT radio button
+		// Spawn Subtract radio button.
 		Subtract = new JRadioButton("Subtract");
 		Subtract.addActionListener(this);
-		c.gridx = 0;
-		c.gridy = 5;
-		add(Subtract, c);
+		layout.gridx = 0;
+		layout.gridy = 5;
+		add(Subtract, layout);
 		
-		//MULTIPLY radio button
+		// Spawn Multiply radio button.
 		Multiply = new JRadioButton("Multiply");
 		Multiply.addActionListener(this);
-		c.gridx = 0;
-		c.gridy = 6;
-		add(Multiply, c);
+		layout.gridx = 0;
+		layout.gridy = 6;
+		add(Multiply, layout);
 		
-		//DIVISION radio Button
+		// Spawn Divide radio button.
 		Divide = new JRadioButton("Divide");
 		Divide.addActionListener(this);
-		c.gridx = 0;
-		c.gridy = 7;
-		add(Divide, c);
+		layout.gridx = 0;
+		layout.gridy = 7;
+		add(Divide, layout);
 		
-		//button group
+		// Spawn group of radio buttons.
 		ButtonGroup myButtonGroup = new ButtonGroup();
 		myButtonGroup.add(Add);
 		myButtonGroup.add(Subtract);
@@ -129,83 +109,72 @@ public class A1Panel extends JPanel implements ActionListener
 		myButtonGroup.add(Divide);
 		
 		
-		//Compute Result button
-		computeResult = new JButton("Compute Result");
-		computeResult.addActionListener(this);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 0;
-		c.gridy = 8;
-		add(computeResult, c);
+		// Spawn button to compute the result.
+		computeButton = new JButton("Compute Result");
+		computeButton.addActionListener(this);
+		layout.fill = GridBagConstraints.HORIZONTAL;
+		layout.gridx = 0;
+		layout.gridy = 8;
+		add(computeButton, layout);
 		
 		
-		//Result Label
+		// Spawn display label for result.
 		result = new JLabel("waiting for you to insert values...");
-		c.gridx = 0;
-		c.gridy = 9;
-		this.add(result, c);
+		layout.gridx = 0;
+		layout.gridy = 9;
+		this.add(result, layout);
 	}
-	public void actionPerformed(ActionEvent e) 
-	{	
-		
-		
-		if(e.getSource() == computeResult && AddBoolean)
-		{
+	
+	/* ActionPerformed */
+    // Respond to actions from the computeButton component.
+	public void actionPerformed(ActionEvent e) {	
+		if(e.getSource() == computeButton && addBoolean) {
 			BigInteger arg1Int = new BigInteger(firstArg.getText());
 			BigInteger arg2Int = new BigInteger(secondArg.getText());
 			resultInt = arg1Int.add(arg2Int);
 			result.setText("The result is: " + resultInt.toString());
 		}
-		
-		else if(e.getSource() == computeResult && SubtractBoolean)
-		{
+		else if(e.getSource() == computeButton && SubtractBoolean) {
 			BigInteger arg1Int = new BigInteger(firstArg.getText());
 			BigInteger arg2Int = new BigInteger(secondArg.getText());
 			resultInt = arg1Int.subtract(arg2Int);
 			result.setText("The result is: " + resultInt.toString()); 
 		}
-		
-		else if (e.getSource() == computeResult && MultiplyBoolean)
-		{
+		else if (e.getSource() == computeButton && multiplyBoolean) {
 			BigInteger arg1Int = new BigInteger(firstArg.getText());
 			BigInteger arg2Int = new BigInteger(secondArg.getText());
 			resultInt = arg1Int.multiply(arg2Int);
 			result.setText("The result is: " + resultInt.toString()); 
 		}
-		else if (e.getSource() == computeResult && DivideBoolean)
-		{
+		else if (e.getSource() == computeButton && DivideBoolean) {
 			BigInteger arg1Int = new BigInteger(firstArg.getText());
 			BigInteger arg2Int = new BigInteger(secondArg.getText());
 			resultInt = arg1Int.divide(arg2Int);
 			result.setText("The result is: " + resultInt.toString()); 
 		}
-		
-		else if(e.getSource() == Add)
-		{
-			AddBoolean = true;
-			SubtractBoolean = false;
-			MultiplyBoolean = false;
-			DivideBoolean = false;
+		else if(e.getSource() == Add) {
+			addBoolean = true;
+			subtractBoolean = false;
+			multiplyBoolean = false;
+			divideBoolean = false;
 		}
-		else if(e.getSource() == Subtract)
-		{
-			AddBoolean = false;
-			SubtractBoolean = true;
-			MultiplyBoolean = false;
-			DivideBoolean = false;
+		else if(e.getSource() == Subtract) {
+			addBoolean = false;
+			subtractBoolean = true;
+			multiplyBoolean = false;
+			divideBoolean = false;
 		}
-		else if(e.getSource() == Multiply)
-		{
-			AddBoolean = false;
-			SubtractBoolean = false;
-			MultiplyBoolean = true;
-			DivideBoolean = false;
+		else if(e.getSource() == Multiply) {
+			addBoolean = false;
+			subtractBoolean = false;
+			multiplyBoolean = true;
+			divideBoolean = false;
 		}
-		else if(e.getSource() == Divide)
-		{
-			AddBoolean = false;
-			SubtractBoolean = false;
-			MultiplyBoolean = false;
-			DivideBoolean = true;
+		else if(e.getSource() == Divide) {
+			addBoolean = false;
+			subtractBoolean = false;
+			multiplyBoolean = false;
+			divideBoolean = true;
 		}
 	}
 }

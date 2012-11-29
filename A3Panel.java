@@ -1,4 +1,12 @@
 // package a4posted;
+// A3 Panel
+// Author: Trevor Stanhope
+// ID: 260399515
+// Date: November 25th, 2012
+/* Description
+Defines components and logic of 
+*/
+
 
 /* Headers */
 import java.awt.*;
@@ -10,81 +18,83 @@ import javax.swing.*;
 /* Classes */
 public class A3Panel extends JPanel implements ActionListener {
 
-    String allPrefixesString = "";
-    String prefixString = "";
-    String dictName = "";
+    /* Global declarations */
+    String allPrefixesString = ""; // the long string for the word matches
+    String prefixString = ""; // the input prefix text as a string
+    String dictName = ""; // the diction file location as a string 
     ArrayList<String> allPrefixesList = new ArrayList<String>();
-    JLabel prefixLabel, wordsLabel;
-    JTextField prefix;
-    JTextArea wordsList = new JTextArea(10,10);
-    JScrollPane wordsPane;
+    JLabel prefixLabel, wordsLabel; // the labels for the text 
+    JTextField prefix; // the input field for text
+    JTextArea wordsList = new JTextArea(10,10); // the display area for word matches
+    JScrollPane wordsPane; // the scrolling pane for the word matches
 
     /* Constructor */
+    // Builds panel with components.
 	public A3Panel(String fileName) {	
 	
 		// Initialize grid layout.
-		dictName = fileName;
-		GridBagLayout gridbag = new GridBagLayout();
-		GridBagConstraints c = new GridBagConstraints();
-		setLayout(gridbag);
+		dictName = fileName; // #HACK; had to store the fileName as a different variable
+		GridBagLayout gridbag = new GridBagLayout(); // layout grid as gridBag
+		GridBagConstraints layout = new GridBagConstraints(); // dimensions of grid
+		setLayout(gridbag); 
 
 		// Spawn prefixLabel.
-		JLabel prefixLabel = new JLabel("Enter the prefix (and hit return): ");
+		JLabel prefixLabel = new JLabel("Enter prefix and hit return for matches: ");
 		prefixLabel.setFont(new Font("Times", Font.BOLD, 16));
-		prefixLabel.setBackground(new Color(000, 200, 000));
-		prefixLabel.setOpaque(true);
 		prefixLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		c.gridx = 0;
-		c.gridy = 0;
-		this.add(prefixLabel, c);
+		layout.gridx = 0;
+		layout.gridy = 0;
+		this.add(prefixLabel, layout);
 
 		// Catch prefix from textField.
 		prefix = new JTextField(25);
 		prefix.addActionListener(this);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 0;
-		c.gridy = 1;
+		layout.fill = GridBagConstraints.HORIZONTAL;
+		layout.gridx = 0;
+		layout.gridy = 1;
 		prefix.addActionListener(this);
-		this.add(prefix, c);
+		this.add(prefix, layout);
 
 		// Spawn wordsLabel.
 		JLabel wordsLabel = new JLabel("All the words with that prefix: ");
 		wordsLabel.setFont(new Font("Times", Font.BOLD, 16));
-		wordsLabel.setBackground(new Color(000, 200, 000));
-		wordsLabel.setOpaque(true);
 		wordsLabel.setHorizontalAlignment(SwingConstants.CENTER );
-		c.gridx = 0;
-		c.gridy = 2;
-		this.add(wordsLabel, c);
+		layout.gridx = 0;
+		layout.gridy = 2;
+		this.add(wordsLabel, layout);
 		
 		// Spawn wordsList into wordsPane.
 		JScrollPane wordsPane = new JScrollPane(wordsList);
-		c.gridx = 0;
-		c.gridy = 3;
-		this.add(wordsPane, c);
+		layout.gridx = 0;
+		layout.gridy = 3;
+		this.add(wordsPane, layout);
 	}
 	
+	/* ActionPerformed */
+	// Respond to actions from the textField component.
     public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == prefix) {
 			ArrayList<String> list = new ArrayList<String>();
 			list = readWordsFromFile(dictName);
-			Trie trie = new Trie();
-			trie.loadKeys(list);
+			Trie dictionary = new Trie(); // #HACK; load dictionary each time prefix is entered
+			dictionary.loadKeys(list); 
 			
-			prefixString = prefix.getText();
-			allPrefixesList = trie.getAllPrefixMatches(prefixString);
-
-            allPrefixesString = "";
+			prefixString = prefix.getText(); // get string from textField
+			allPrefixesList = dictionary.getAllPrefixMatches(prefixString); // find matches in dictionary
+            
+            allPrefixesString = ""; // clear previous matches
             for(int i = 0; i < allPrefixesList.size(); i++) {
-                allPrefixesString = allPrefixesString + allPrefixesList.get(i) + "\n";
+                allPrefixesString = allPrefixesString + allPrefixesList.get(i) + "\n"; // compile matches into one string
 			}
-			wordsList.setText(allPrefixesString);
+			wordsList.setText(allPrefixesString); // display all matches
 		}
 		else {
 			return;
 		}
 	}
 	
+	/* readWordsFromFile */
+	// Method from AutoComplete.java to read the words from a dictionary text file.
 	public static ArrayList<String> readWordsFromFile(String filename) {
 		ArrayList<String> words = new ArrayList<String>();
 		try {
