@@ -1,134 +1,211 @@
-// A1 Panel
-// Author: Trevor Stanhope
-// `
-// Date: November 25th, 2012
+package a4posted;
 
-/*HEADER*/
-// package a4posted;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.math.BigInteger;
 
-/*CLASSES*/
-public class A1Panel extends JPanel implements ActionListener { 
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JTextArea;
+import javax.swing.JRadioButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
-    // Initialize variables.
-	String result; // the result string to be displayed
-	String firstString; // the first value as a string
-	String secondString; // the second value as a string
-	String sumString = "sum"; // string command for sum
-	String differenceString = "difference"; // string command for difference
-	String productString = "product"; // string command for product
-	String quotientString = "quotient"; // string command for quotient
-	int firstInteger = 0; // the first value
-	int secondInteger = 0; // the second value
-	JTextField firstField; // the first Field object
-	JTextField secondField; // the second Field object
-	JButton computeButton; // action button to calculate value
-	JLabel display; // label to display results
-	JRadioButton sumRadio; // radio button for sum(a,b)
-    JRadioButton differenceRadio; // radio button for difference(a,b)
-    JRadioButton productRadio; // radio button for product(a,b)
-    JRadioButton quotientRadio; // radio button for quotient(a,b)
-	ButtonGroup group; // group of radio buttons
+import javax.swing.JPanel;
 
-    // Clean execution.
-	A1Panel(){
-		makeComponents();
-		makeLayout();
-	}
-	
-	// Generate objects.
-	private void makeComponents(){
-	    // Spawn two entry fields.
-		firstField = new JTextField("0", 10);
-		// firstField.addActionListener(this);
-		secondField = new JTextField("0", 10);
-		// secondField.addActionListener(this);
+
+
+public class A1Panel extends JPanel implements ActionListener
+{
+
+
+	JTextField firstArg, secondArg;
+	BigInteger arg1Int, arg2Int, resultInt;
+	JRadioButton Add, Subtract, Multiply, Divide;
+	JButton computeResult;
+	JLabel result, label1, label2;
+	Boolean AddBoolean = false;
+	Boolean SubtractBoolean = false;
+	Boolean MultiplyBoolean = false; 
+	Boolean DivideBoolean = false;
+
+	//constructor
+	public A1Panel()
+	{
+		//layout initialization
+		GridBagLayout gridbag = new GridBagLayout();
+		GridBagConstraints c = new GridBagConstraints();
+		this.setLayout(gridbag);
 		
-		// Spawn radio buttons as group.
-		// Sum button.
-		ButtonGroup group = new ButtonGroup();
-        JRadioButton sumRadio = new JRadioButton(sumString);
-        sumRadio.setSelected(true);
-        sumRadio.setActionCommand(sumString);
-        sumRadio.addActionListener(this);
-        group.add(sumRadio);
-        
-        // Difference button.
-        JRadioButton differenceRadio = new JRadioButton(differenceString);
-        differenceRadio.setSelected(true);
-        differenceRadio.setActionCommand(differenceString);
-        differenceRadio.addActionListener(this);
-        group.add(differenceRadio);
-        
-        // Product button.
-        JRadioButton productRadio = new JRadioButton(productString);
-        productRadio.setSelected(true);
-        productRadio.setActionCommand(productString);
-        productRadio.addActionListener(this);
-        group.add(productRadio);
-        
-        // Quotient button.
-        JRadioButton quotientRadio = new JRadioButton(quotientString);
-        quotientRadio.setSelected(true);
-        quotientRadio.setActionCommand(quotientString);
-        quotientRadio.addActionListener(this);
-        group.add(quotientRadio);
-        
-		// Spawn calculate button.
-		computeButton = new JButton("SUM");
-		computeButton.addActionListener(this);
-		
-		// Set display attributes.
-		display = new JLabel();
-		display.setFont(new Font("Times", Font.BOLD, 16));
-		display.setBackground(new Color(160, 160, 160));
-		display.setOpaque(true);
-		display.setHorizontalAlignment(SwingConstants.CENTER);
-	}
+		//first label
+		JLabel label1 = new JLabel("First Argument");
+		label1.setFont(new Font("Times", Font.BOLD, 16));
+		label1.setBackground(Color.lightGray);
+		label1.setOpaque(true);
+		label1.setHorizontalAlignment( SwingConstants.CENTER );
+		c.gridx = 0;
+		c.gridy = 0;
+		add(label1, c);
 
-    // Generate layout.
-	private void makeLayout(){
-	    JPanel radioPanel = new JPanel(new GridLayout(0, 1));
-		setLayout(new GridLayout(2,3));
-        radioPanel.add(sumRadio);
-        radioPanel.add(differenceRadio);
-        radioPanel.add(productRadio);
-        radioPanel.add(quotientRadio);
-        add(radioPanel);
-		add(firstField);
-		add(secondField);	
-		add(computeButton);
-		add(display); 
-	}
-
-    // Respond to action.
-	public void actionPerformed(ActionEvent e) { 
-		if (e.getSource() == computeButton){
 		
-		    // Catch input from fields.
-		    firstString = firstField.getText();
-		    secondString = secondField.getText();
-		    firstInteger = Integer.parseInt(firstString);
-		    secondInteger = Integer.parseInt(secondString);
-		    
-		    // Determine operation from radio button selection.
-		    if (e.getActionCommand() == sumString) {
-			    result = Integer.toString(firstInteger + secondInteger);
-			}
-			else if (e.getActionCommand() == differenceString) {
-			    result = Integer.toString(firstInteger + secondInteger);
-			}
-			else if (e.getActionCommand() == productString) {
-			    result = Integer.toString(firstInteger + secondInteger);
-			}
-			else if (e.getActionCommand() == quotientString) {
-			    result = Integer.toString(firstInteger + secondInteger);
-			}
-			// Display result.
-			display.setText(result);
+		//First Arg textfield
+		firstArg = new JTextField(25);
+		firstArg.addActionListener(this);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 1;
+		add(firstArg, c);
+
+		
+		//second label
+		JLabel label2 = new JLabel("Second Argument");
+		label2.setFont(new Font("Times", Font.BOLD, 16));
+		label2.setBackground(new Color(160, 160, 160));
+		label2.setOpaque(true);
+		label2.setHorizontalAlignment( SwingConstants.CENTER );
+		c.gridx = 0;
+		c.gridy = 2;
+		add(label2, c);
+		
+		
+		//Second Arg textfield
+		secondArg = new JTextField(25);
+		secondArg.addActionListener(this);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 3;
+		add(secondArg, c);
+		
+		
+		
+		//***Radio Buttons***//
+		
+		//ADD radio button
+		Add = new JRadioButton("Add");
+		Add.addActionListener(this);
+		c.gridx = 0;
+		c.gridy = 4;
+		add(Add, c);
+		
+		//SUBTRACT radio button
+		Subtract = new JRadioButton("Subtract");
+		Subtract.addActionListener(this);
+		c.gridx = 0;
+		c.gridy = 5;
+		add(Subtract, c);
+		
+		//MULTIPLY radio button
+		Multiply = new JRadioButton("Multiply");
+		Multiply.addActionListener(this);
+		c.gridx = 0;
+		c.gridy = 6;
+		add(Multiply, c);
+		
+		//DIVISION radio Button
+		Divide = new JRadioButton("Divide");
+		Divide.addActionListener(this);
+		c.gridx = 0;
+		c.gridy = 7;
+		add(Divide, c);
+		
+		//button group
+		ButtonGroup myButtonGroup = new ButtonGroup();
+		myButtonGroup.add(Add);
+		myButtonGroup.add(Subtract);
+		myButtonGroup.add(Multiply);
+		myButtonGroup.add(Divide);
+		
+		
+		//Compute Result button
+		computeResult = new JButton("Compute Result");
+		computeResult.addActionListener(this);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 8;
+		add(computeResult, c);
+		
+		
+		//Result Label
+		result = new JLabel("waiting for you to insert values...");
+		c.gridx = 0;
+		c.gridy = 9;
+		this.add(result, c);
+	}
+	public void actionPerformed(ActionEvent e) 
+	{	
+		
+		
+		if(e.getSource() == computeResult && AddBoolean)
+		{
+			BigInteger arg1Int = new BigInteger(firstArg.getText());
+			BigInteger arg2Int = new BigInteger(secondArg.getText());
+			resultInt = arg1Int.add(arg2Int);
+			result.setText("The result is: " + resultInt.toString());
+		}
+		
+		else if(e.getSource() == computeResult && SubtractBoolean)
+		{
+			BigInteger arg1Int = new BigInteger(firstArg.getText());
+			BigInteger arg2Int = new BigInteger(secondArg.getText());
+			resultInt = arg1Int.subtract(arg2Int);
+			result.setText("The result is: " + resultInt.toString()); 
+		}
+		
+		else if (e.getSource() == computeResult && MultiplyBoolean)
+		{
+			BigInteger arg1Int = new BigInteger(firstArg.getText());
+			BigInteger arg2Int = new BigInteger(secondArg.getText());
+			resultInt = arg1Int.multiply(arg2Int);
+			result.setText("The result is: " + resultInt.toString()); 
+		}
+		else if (e.getSource() == computeResult && DivideBoolean)
+		{
+			BigInteger arg1Int = new BigInteger(firstArg.getText());
+			BigInteger arg2Int = new BigInteger(secondArg.getText());
+			resultInt = arg1Int.divide(arg2Int);
+			result.setText("The result is: " + resultInt.toString()); 
+		}
+		
+		else if(e.getSource() == Add)
+		{
+			AddBoolean = true;
+			SubtractBoolean = false;
+			MultiplyBoolean = false;
+			DivideBoolean = false;
+		}
+		else if(e.getSource() == Subtract)
+		{
+			AddBoolean = false;
+			SubtractBoolean = true;
+			MultiplyBoolean = false;
+			DivideBoolean = false;
+		}
+		else if(e.getSource() == Multiply)
+		{
+			AddBoolean = false;
+			SubtractBoolean = false;
+			MultiplyBoolean = true;
+			DivideBoolean = false;
+		}
+		else if(e.getSource() == Divide)
+		{
+			AddBoolean = false;
+			SubtractBoolean = false;
+			MultiplyBoolean = false;
+			DivideBoolean = true;
 		}
 	}
 }
-
