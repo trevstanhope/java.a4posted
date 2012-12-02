@@ -3,10 +3,7 @@
 // Author: Trevor Stanhope
 // ID: 260399515
 // Date: November 25th, 2012
-/* Description
-Defines components and logic of 
-*/
-
+// Description: Defines the components and logic for an auto-complete java interface.
 
 /* Headers */
 import java.awt.*;
@@ -14,11 +11,13 @@ import java.awt.event.*;
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
+// import a3.Trie; // requires method getAllPrefixMatches(prefix)
+// import a3.TrieNode; // requires TrieNode type
 
 /* Classes */
 public class A3Panel extends JPanel implements ActionListener {
 
-    /* Global declarations */
+    /* Declarations */
     String allPrefixesString = ""; // the long string for the word matches
     String prefixString = ""; // the input prefix text as a string
     String dictName = ""; // the diction file location as a string 
@@ -70,7 +69,8 @@ public class A3Panel extends JPanel implements ActionListener {
 		this.add(wordsPane, layout);
 	}
 	
-	/* ActionPerformed */
+	/* Methods */
+	// ActionPerformed(event) //
 	// Respond to actions from the textField component.
     public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == prefix) {
@@ -93,7 +93,7 @@ public class A3Panel extends JPanel implements ActionListener {
 		}
 	}
 	
-	/* readWordsFromFile */
+	// readWordsFromFile(filename) //
 	// Method from AutoComplete.java to read the words from a dictionary text file.
 	public static ArrayList<String> readWordsFromFile(String filename) {
 		ArrayList<String> words = new ArrayList<String>();
