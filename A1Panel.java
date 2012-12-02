@@ -1,4 +1,9 @@
-//package a4posted;
+// package a4posted;
+// A1 Panel
+// Author: Trevor Stanhope
+// ID: 260399515
+// Date: November 25th, 2012
+// Description: Defines the components and logic for a simple calculator interface.
 
 /* Headers */
 import java.awt.event.*;
@@ -9,7 +14,7 @@ import javax.swing.*;
 /* Classes */
 public class A1Panel extends JPanel implements ActionListener {
 
-    /* Declare global variables */
+    /* Declararions*/
 	JTextField firstArg, secondArg; // text field for input integers
 	BigInteger arg1Int, arg2Int, resultInt; // integers operate on
 	JRadioButton Add, Subtract, Multiply, Divide; // radio buttons
@@ -41,7 +46,6 @@ public class A1Panel extends JPanel implements ActionListener {
 		layout.gridy = 0;
 		add(label1, layout);
 
-		
 		// Spawn first integer's 'textField.
 		firstArg = new JTextField(25);
 		firstArg.addActionListener(this);
@@ -49,7 +53,6 @@ public class A1Panel extends JPanel implements ActionListener {
 		layout.gridx = 0;
 		layout.gridy = 1;
 		add(firstArg, layout);
-
 		
 		// Set first label.
 		JLabel label2 = new JLabel("Second Argument");
@@ -61,7 +64,6 @@ public class A1Panel extends JPanel implements ActionListener {
 		layout.gridy = 2;
 		add(label2, layout);
 		
-		
 		// Spawn first integer's 'textField.
 		secondArg = new JTextField(25);
 		secondArg.addActionListener(this);
@@ -69,8 +71,6 @@ public class A1Panel extends JPanel implements ActionListener {
 		layout.gridx = 0;
 		layout.gridy = 3;
 		add(secondArg, layout);
-		
-		
 		
 		/* Radio Buttons */
 		// Spawn Add radio button.
@@ -117,7 +117,6 @@ public class A1Panel extends JPanel implements ActionListener {
 		layout.gridy = 8;
 		add(computeButton, layout);
 		
-		
 		// Spawn display label for result.
 		result = new JLabel("waiting for you to insert values...");
 		layout.gridx = 0;
@@ -125,16 +124,17 @@ public class A1Panel extends JPanel implements ActionListener {
 		this.add(result, layout);
 	}
 	
-	/* ActionPerformed */
-    // Respond to actions from the computeButton component.
+	/* Methods */
+	// actionPerformed(event) //
+    // Respond to actionEvents from the computeButton component.
 	public void actionPerformed(ActionEvent e) {	
-		if(e.getSource() == computeButton && addBoolean) {
+		if (e.getSource() == computeButton && addBoolean) {
 			BigInteger arg1Int = new BigInteger(firstArg.getText());
 			BigInteger arg2Int = new BigInteger(secondArg.getText());
 			resultInt = arg1Int.add(arg2Int);
 			result.setText("The result is: " + resultInt.toString());
 		}
-		else if(e.getSource() == computeButton && SubtractBoolean) {
+		else if (e.getSource() == computeButton && subtractBoolean) {
 			BigInteger arg1Int = new BigInteger(firstArg.getText());
 			BigInteger arg2Int = new BigInteger(secondArg.getText());
 			resultInt = arg1Int.subtract(arg2Int);
@@ -146,31 +146,31 @@ public class A1Panel extends JPanel implements ActionListener {
 			resultInt = arg1Int.multiply(arg2Int);
 			result.setText("The result is: " + resultInt.toString()); 
 		}
-		else if (e.getSource() == computeButton && DivideBoolean) {
+		else if (e.getSource() == computeButton && divideBoolean) {
 			BigInteger arg1Int = new BigInteger(firstArg.getText());
 			BigInteger arg2Int = new BigInteger(secondArg.getText());
 			resultInt = arg1Int.divide(arg2Int);
 			result.setText("The result is: " + resultInt.toString()); 
 		}
-		else if(e.getSource() == Add) {
+		else if (e.getSource() == Add) {
 			addBoolean = true;
 			subtractBoolean = false;
 			multiplyBoolean = false;
 			divideBoolean = false;
 		}
-		else if(e.getSource() == Subtract) {
+		else if (e.getSource() == Subtract) {
 			addBoolean = false;
 			subtractBoolean = true;
 			multiplyBoolean = false;
 			divideBoolean = false;
 		}
-		else if(e.getSource() == Multiply) {
+		else if (e.getSource() == Multiply) {
 			addBoolean = false;
 			subtractBoolean = false;
 			multiplyBoolean = true;
 			divideBoolean = false;
 		}
-		else if(e.getSource() == Divide) {
+		else if (e.getSource() == Divide) {
 			addBoolean = false;
 			subtractBoolean = false;
 			multiplyBoolean = false;
