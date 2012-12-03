@@ -2,13 +2,14 @@
 // A1 Panel
 // Author: Trevor Stanhope
 // ID: 260399515
-// Date: November 25th, 2012
+// Date: December 2nd, 2012
 // Description: Defines the components and logic for a simple calculator interface.
 
 /* Headers */
 import java.awt.event.*;
 import java.awt.*;
-import java.math.BigInteger;
+import java.util.*;
+import java.math.*;
 import javax.swing.*;
 
 /* Classes */
@@ -31,41 +32,37 @@ public class A1Panel extends JPanel implements ActionListener {
 	// Builds panel with components.
 	public A1Panel() {
 	
-		// Initialize grid layout.
+		// Initialize grid layout as a GridBag
 		GridBagLayout gridbag = new GridBagLayout();
 		GridBagConstraints layout = new GridBagConstraints();
 		this.setLayout(gridbag);
 		
 		// Set first label.
-		JLabel label1 = new JLabel("First Argument");
-		label1.setFont(new Font("Times", Font.BOLD, 16));
-		label1.setBackground(Color.lightGray);
-		label1.setOpaque(true);
+		JLabel label1 = new JLabel("First Integer: ");
+		label1.setFont(new Font("Monospace", Font.ITALIC, 13));
 		label1.setHorizontalAlignment(SwingConstants.CENTER);
 		layout.gridx = 0;
 		layout.gridy = 0;
 		add(label1, layout);
 
-		// Spawn first integer's 'textField.
-		firstArg = new JTextField(25);
+		// Spawn first integer's textField.
+		firstArg = new JTextField(24);
 		firstArg.addActionListener(this);
 		layout.fill = GridBagConstraints.HORIZONTAL;
 		layout.gridx = 0;
 		layout.gridy = 1;
 		add(firstArg, layout);
 		
-		// Set first label.
-		JLabel label2 = new JLabel("Second Argument");
-		label2.setFont(new Font("Times", Font.BOLD, 16));
-		label2.setBackground(new Color(160, 160, 160));
-		label2.setOpaque(true);
+		// Set second label.
+		JLabel label2 = new JLabel("Second Integer: ");
+		label2.setFont(new Font("Monospace", Font.ITALIC, 13));
 		label2.setHorizontalAlignment(SwingConstants.CENTER);
 		layout.gridx = 0;
 		layout.gridy = 2;
 		add(label2, layout);
 		
-		// Spawn first integer's 'textField.
-		secondArg = new JTextField(25);
+		// Spawn second integer's textField.
+		secondArg = new JTextField(24);
 		secondArg.addActionListener(this);
 		layout.fill = GridBagConstraints.HORIZONTAL;
 		layout.gridx = 0;
@@ -75,6 +72,7 @@ public class A1Panel extends JPanel implements ActionListener {
 		/* Radio Buttons */
 		// Spawn Add radio button.
 		Add = new JRadioButton("Add");
+		Add.setFont(new Font("Monospace", Font.PLAIN, 13));
 		Add.addActionListener(this);
 		layout.gridx = 0;
 		layout.gridy = 4;
@@ -82,6 +80,7 @@ public class A1Panel extends JPanel implements ActionListener {
 		
 		// Spawn Subtract radio button.
 		Subtract = new JRadioButton("Subtract");
+		Subtract.setFont(new Font("Monospace", Font.PLAIN, 13));
 		Subtract.addActionListener(this);
 		layout.gridx = 0;
 		layout.gridy = 5;
@@ -89,6 +88,7 @@ public class A1Panel extends JPanel implements ActionListener {
 		
 		// Spawn Multiply radio button.
 		Multiply = new JRadioButton("Multiply");
+		Multiply.setFont(new Font("Monospace", Font.PLAIN, 13));
 		Multiply.addActionListener(this);
 		layout.gridx = 0;
 		layout.gridy = 6;
@@ -96,21 +96,22 @@ public class A1Panel extends JPanel implements ActionListener {
 		
 		// Spawn Divide radio button.
 		Divide = new JRadioButton("Divide");
+		Divide.setFont(new Font("Monospace", Font.PLAIN, 13));
 		Divide.addActionListener(this);
 		layout.gridx = 0;
 		layout.gridy = 7;
 		add(Divide, layout);
 		
-		// Spawn group of radio buttons.
+		// Groups radio buttons so that there is only one selected at a time.
 		ButtonGroup myButtonGroup = new ButtonGroup();
 		myButtonGroup.add(Add);
 		myButtonGroup.add(Subtract);
 		myButtonGroup.add(Multiply);
 		myButtonGroup.add(Divide);
 		
-		
 		// Spawn button to compute the result.
 		computeButton = new JButton("Compute Result");
+		computeButton.setFont(new Font("Monospace", Font.BOLD, 13));
 		computeButton.addActionListener(this);
 		layout.fill = GridBagConstraints.HORIZONTAL;
 		layout.gridx = 0;
@@ -118,7 +119,9 @@ public class A1Panel extends JPanel implements ActionListener {
 		add(computeButton, layout);
 		
 		// Spawn display label for result.
-		result = new JLabel("waiting for you to insert values...");
+		result = new JLabel(" ");
+		result.setBackground(Color.white);
+		result.setOpaque(true);
 		layout.gridx = 0;
 		layout.gridy = 9;
 		this.add(result, layout);
@@ -127,43 +130,55 @@ public class A1Panel extends JPanel implements ActionListener {
 	/* Methods */
 	// actionPerformed(event) //
     // Respond to actionEvents from the computeButton component.
-	public void actionPerformed(ActionEvent e) {	
-		if (e.getSource() == computeButton && addBoolean) {
-			BigInteger arg1Int = new BigInteger(firstArg.getText());
-			BigInteger arg2Int = new BigInteger(secondArg.getText());
-			resultInt = arg1Int.add(arg2Int);
-			result.setText("The result is: " + resultInt.toString());
+	public void actionPerformed(ActionEvent e) {
+	
+	    // Check if inputs are integers, and calculate if so, otherwise return error.
+	    if (tryParse(firstArg.getText()) && tryParse(secondArg.getText())) {
+	        
+	        // Catch arguments from the input textFields.
+	        BigInteger arg1Int = new BigInteger(firstArg.getText());
+		   	BigInteger arg2Int = new BigInteger(secondArg.getText());
+	        
+	        // Compute result for selected operator boolean.
+	        if (e.getSource() == computeButton && addBoolean) {
+			    resultInt = arg1Int.add(arg2Int);
+			    result.setText(resultInt.toString());
+		    }
+		    else if (e.getSource() == computeButton && subtractBoolean) {
+		    	resultInt = arg1Int.subtract(arg2Int);
+		    	result.setText(resultInt.toString()); 
+		    }
+		    else if (e.getSource() == computeButton && multiplyBoolean) {
+		    	resultInt = arg1Int.multiply(arg2Int);
+		    	result.setText(resultInt.toString()); 
+		    }
+		    else if (e.getSource() == computeButton && divideBoolean) {
+			    resultInt = arg1Int.divide(arg2Int);
+			    result.setText(resultInt.toString()); 
+		    }
+		    // If all booleans are still false when computeButton is clicked, throw error.
+		    else if (e.getSource() == computeButton && !(divideBoolean || multiplyBoolean || subtractBoolean || addBoolean)) {
+                result.setText("Error: Select an operator"); 
+		    }
 		}
-		else if (e.getSource() == computeButton && subtractBoolean) {
-			BigInteger arg1Int = new BigInteger(firstArg.getText());
-			BigInteger arg2Int = new BigInteger(secondArg.getText());
-			resultInt = arg1Int.subtract(arg2Int);
-			result.setText("The result is: " + resultInt.toString()); 
-		}
-		else if (e.getSource() == computeButton && multiplyBoolean) {
-			BigInteger arg1Int = new BigInteger(firstArg.getText());
-			BigInteger arg2Int = new BigInteger(secondArg.getText());
-			resultInt = arg1Int.multiply(arg2Int);
-			result.setText("The result is: " + resultInt.toString()); 
-		}
-		else if (e.getSource() == computeButton && divideBoolean) {
-			BigInteger arg1Int = new BigInteger(firstArg.getText());
-			BigInteger arg2Int = new BigInteger(secondArg.getText());
-			resultInt = arg1Int.divide(arg2Int);
-			result.setText("The result is: " + resultInt.toString()); 
-		}
-		else if (e.getSource() == Add) {
+		// Otherwise throw BadInput error.
+		else {
+	        result.setText("Error: Not all inputs are integers");
+	    }
+	        
+	    // Set boolean for operator chosen via the radioButtons.
+        if (e.getSource() == Add) {
 			addBoolean = true;
 			subtractBoolean = false;
-			multiplyBoolean = false;
-			divideBoolean = false;
+		    multiplyBoolean = false;
+		    divideBoolean = false;
 		}
 		else if (e.getSource() == Subtract) {
-			addBoolean = false;
-			subtractBoolean = true;
+		    addBoolean = false;
+            subtractBoolean = true;
 			multiplyBoolean = false;
-			divideBoolean = false;
-		}
+            divideBoolean = false;
+	    }
 		else if (e.getSource() == Multiply) {
 			addBoolean = false;
 			subtractBoolean = false;
@@ -176,5 +191,19 @@ public class A1Panel extends JPanel implements ActionListener {
 			multiplyBoolean = false;
 			divideBoolean = true;
 		}
-	}
+		else {
+		    return;
+		}
+	} 
+	
+	// tryParseBigInteger(string)
+	// Attempts to parse a string as a BigInteger, returns true if string is an integer value.
+	public static Boolean tryParse(String text) {
+        try {
+            BigInteger i = new BigInteger(text);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }
