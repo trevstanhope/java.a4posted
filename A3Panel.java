@@ -11,8 +11,7 @@ import java.awt.event.*;
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
-// import a3.Trie; // requires method getAllPrefixMatches(prefix)
-// import a3.TrieNode; // requires TrieNode type
+//import a3.*; // requires type TrieNode and method getAllPrefixMatches(prefix)
 
 /* Classes */
 public class A3Panel extends JPanel implements ActionListener {
@@ -20,7 +19,7 @@ public class A3Panel extends JPanel implements ActionListener {
     /* Declarations */
     String allPrefixesString = ""; // the long string for the word matches
     String prefixString = ""; // the input prefix text as a string
-    String dictName = ""; // the diction file location as a string 
+    String dictName = ""; // the dictionary file location as a string 
     ArrayList<String> allPrefixesList = new ArrayList<String>();
     JLabel prefixLabel, wordsLabel; // the labels for the text 
     JTextField prefix; // the input field for text
@@ -38,15 +37,15 @@ public class A3Panel extends JPanel implements ActionListener {
 		setLayout(gridbag); 
 
 		// Spawn prefixLabel.
-		JLabel prefixLabel = new JLabel("Enter prefix and hit return for matches: ");
-		prefixLabel.setFont(new Font("Times", Font.BOLD, 16));
-		prefixLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		JLabel prefixLabel = new JLabel("Enter Prefix (then press ENTER):");
+		prefixLabel.setFont(new Font("Monospace", Font.ITALIC, 13));
+		prefixLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		layout.gridx = 0;
 		layout.gridy = 0;
 		this.add(prefixLabel, layout);
 
 		// Catch prefix from textField.
-		prefix = new JTextField(25);
+		prefix = new JTextField(24);
 		prefix.addActionListener(this);
 		layout.fill = GridBagConstraints.HORIZONTAL;
 		layout.gridx = 0;
@@ -55,9 +54,9 @@ public class A3Panel extends JPanel implements ActionListener {
 		this.add(prefix, layout);
 
 		// Spawn wordsLabel.
-		JLabel wordsLabel = new JLabel("All the words with that prefix: ");
-		wordsLabel.setFont(new Font("Times", Font.BOLD, 16));
-		wordsLabel.setHorizontalAlignment(SwingConstants.CENTER );
+		JLabel wordsLabel = new JLabel("Prefix Matches:");
+		wordsLabel.setFont(new Font("Monospace", Font.ITALIC, 13));
+		wordsLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		layout.gridx = 0;
 		layout.gridy = 2;
 		this.add(wordsLabel, layout);
@@ -75,9 +74,9 @@ public class A3Panel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == prefix) {
 			ArrayList<String> list = new ArrayList<String>();
-			list = readWordsFromFile(dictName);
+			list = readWordsFromFile(dictName); // get dictionary keys from file
 			Trie dictionary = new Trie(); // #HACK; load dictionary each time prefix is entered
-			dictionary.loadKeys(list); 
+			dictionary.loadKeys(list); // fill Trie dictionary with valid keys 
 			
 			prefixString = prefix.getText(); // get string from textField
 			allPrefixesList = dictionary.getAllPrefixMatches(prefixString); // find matches in dictionary
@@ -86,15 +85,15 @@ public class A3Panel extends JPanel implements ActionListener {
             for(int i = 0; i < allPrefixesList.size(); i++) {
                 allPrefixesString = allPrefixesString + allPrefixesList.get(i) + "\n"; // compile matches into one string
 			}
-			wordsList.setText(allPrefixesString); // display all matches
+			wordsList.setText(allPrefixesString); // display all matches in textArea
 		}
 		else {
 			return;
 		}
 	}
 	
-	// readWordsFromFile(filename) //
-	// Method from AutoComplete.java to read the words from a dictionary text file.
+	// readWordsFromFile(filename)
+	// Method to read all words from a dictionary text file into an String ArrayList (Borrowed from a3.AutoComplete).
 	public static ArrayList<String> readWordsFromFile(String filename) {
 		ArrayList<String> words = new ArrayList<String>();
 		try {
